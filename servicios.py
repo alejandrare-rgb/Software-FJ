@@ -58,6 +58,10 @@ class ReservaSala(Servicio):
 
     def describir(self):
         return f"Sala '{self.nombre}' para {self.capacidad} personas. Tarifa/hora: ${self.tarifa:.2f}"
+        def calcular_costo(self, duracion, impuesto=0.0, descuento=0.0):
+        """Calcula el costo de reservar una sala."""
+        self.validar_parametros(duracion)
+        return super().calcular_costo(duracion, impuesto, descuento)
 
 class AlquilerEquipo(Servicio):
     def __init__(self, identificador, nombre, tarifa, cantidad: int, disponible=True):
@@ -73,6 +77,13 @@ class AlquilerEquipo(Servicio):
 
     def describir(self):
         return f"Equipo '{self.nombre}', unidades: {self.cantidad}. Tarifa/hora: ${self.tarifa:.2f}"
+        def calcular_costo(self, duracion, impuesto=0.0, descuento=0.0):
+        """Calcula el costo del alquiler según la cantidad de equipos."""
+        self.validar_parametros(duracion)
+        costo_unitario = super().calcular_costo(
+            duracion, impuesto, descuento
+        )
+        return round(costo_unitario * self.cantidad, 2)
 
 class Asesoria(Servicio):
     def __init__(self, identificador, nombre, tarifa, especialidad: str, disponible=True):
@@ -88,3 +99,7 @@ class Asesoria(Servicio):
 
     def describir(self):
         return f"Asesoría en {self.especialidad}: {self.nombre}. Tarifa/hora: ${self.tarifa:.2f}"
+        def calcular_costo(self, duracion, impuesto=0.0, descuento=0.0):
+        """Calcula el costo de una asesoría."""
+        self.validar_parametros(duracion)
+        return super().calcular_costo(duracion, impuesto, descuento)
